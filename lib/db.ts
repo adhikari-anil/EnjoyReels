@@ -23,7 +23,10 @@ export async function connectToDataBase(){
         };
         cached.promise = mongoose
         .connect(dbString, opts)
-        .then(()=>mongoose.connection)
+        .then(()=>{
+            console.log("Connected!")
+            return mongoose.connection
+        })
     }
     try {
         cached.conn = await cached.promise;
