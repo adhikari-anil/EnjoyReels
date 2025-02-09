@@ -3,9 +3,14 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDataBase } from "./db";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import GithubProvider from "next-auth/providers/github";
 
 export const authOptions: NextAuthOptions = {
   providers: [
+    GithubProvider({
+      clientId: process.env.CLIENTID!,
+      clientSecret: process.env.CLIENTSECRET!
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
