@@ -3,13 +3,12 @@
 import Link from "next/link";
 import React from "react";
 import { useSession, signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 function login() {
   const session = useSession();
-  console.log("Session: ", session);
-
-  const handleSignIn = () => {
-    signIn("github");
+  const handleSignIn = async (app: string) => {
+    await signIn(app, {callbackUrl: "http://localhost:3000"});
   };
 
   return (
@@ -47,12 +46,18 @@ function login() {
           <div className="mt-4 border-2 border-solid border-[#000] rounded-lg">
             <button className="w-full">Submit</button>
           </div>
-          <div className="flex justify-center mt-5 gap-2">
+          <div className="flex justify-center mt-5 gap-2 cursor-pointer">
             <img
               src="https://avatars.slack-edge.com/2020-11-25/1527503386626_319578f21381f9641cd8_512.png"
               alt=""
               className="rounded-full w-10 h-10"
-              onClick={handleSignIn}
+              onClick={() => handleSignIn("github")}
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/800px-Google_%22G%22_logo.svg.png"
+              alt=""
+              className="rounded-full w-10 h-10"
+              onClick={() => handleSignIn("google")}
             />
           </div>
         </form>
