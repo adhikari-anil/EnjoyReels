@@ -31,7 +31,7 @@ const signUp = () => {
               placeholder="Enter Your Password..."
             />
           </div>
-          <div className="mt-4 border-2 border-solid border-[#000] rounded-lg">
+          <div className="mt-4 p-2 border-2 border-solid border-[#000] rounded-lg">
             <button className="w-full">Submit</button>
           </div>
         </form>

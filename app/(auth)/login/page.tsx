@@ -43,7 +43,7 @@ function login() {
           <div className="mt-4 text-center font-bold">
             <Link href={"forget-password"}>Forget Password ?</Link>
           </div>
-          <div className="mt-4 border-2 border-solid border-[#000] rounded-lg">
+          <div className="mt-4 p-2 border-2 border-solid border-[#000] rounded-lg">
             <button className="w-full">Submit</button>
           </div>
           <div className="flex justify-center mt-5 gap-2 cursor-pointer">
