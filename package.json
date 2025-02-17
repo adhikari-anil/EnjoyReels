@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/font": "^14.2.15",
     "bcryptjs": "^2.4.3",
     "imagekit": "^6.0.0",
     "imagekitio-next": "^1.0.1",
@@ -25,6 +26,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "daisyui": "^4.12.23",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "postcss": "^8",

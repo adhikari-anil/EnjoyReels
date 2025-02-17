@@ -1,14 +1,47 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-function login() {
-  const session = useSession();
-  const handleSignIn = async (app: string) => {
-    await signIn(app, {callbackUrl: "http://localhost:3000"});
+interface propsForSignIn {
+  provider: "github" | "google" | "credentials";
+  email?: string;
+  password?: string;
+}
+
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const router = useRouter();
+
+  const handleSignIn = async (data: propsForSignIn) => {
+    if(data.provider==="credentials" && (!data.email || !data.password)){
+      setError("Please insert your Email and Password!");
+      return;
+    }
+    await signIn(data.provider, {
+      ...(data.email && { email: data.email }),
+      ...(data.password && { password: data.password }),
+      callbackUrl: "http://localhost:3000",
+    });
+    router.push("/");
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await handleSignIn({
+        provider: "credentials",
+        email: email,
+        password: password,
+      });
+    } catch (error) {
+      console.log("Error in LogIn!..");
+    }
   };
 
   return (
@@ -19,7 +52,7 @@ function login() {
         </h1>
         <h1 className="text-3xl font-bold">Login</h1>
         <p>Welcome back</p>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mt-4 flex flex-col gap-4">
             <label htmlFor="email">Email</label>
             <input
@@ -28,6 +61,7 @@ function login() {
               name="email"
               type="email"
               placeholder="Enter Your Email..."
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mt-4 p-2 flex flex-col gap-4">
@@ -38,6 +72,7 @@ function login() {
               name="password"
               type="password"
               placeholder="Enter Your Password..."
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="mt-4 text-center font-bold">
@@ -51,13 +86,13 @@ function login() {
               src="https://avatars.slack-edge.com/2020-11-25/1527503386626_319578f21381f9641cd8_512.png"
               alt=""
               className="rounded-full w-10 h-10"
-              onClick={() => handleSignIn("github")}
+              onClick={() => handleSignIn({ provider: "github" })}
             />
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/800px-Google_%22G%22_logo.svg.png"
               alt=""
               className="rounded-full w-10 h-10"
-              onClick={() => handleSignIn("google")}
+              onClick={() => handleSignIn({ provider: "google" })}
             />
           </div>
         </form>
@@ -72,4 +107,4 @@ function login() {
   );
 }
 
-export default login;
+export default Login;
