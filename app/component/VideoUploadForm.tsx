@@ -5,6 +5,7 @@ import FileUpload from "./FileUpload";
 import { apiClient } from "@/lib/api-client";
 import { useState } from "react";
 import { IKUploadResponse } from "imagekitio-next/dist/types/components/IKUpload/props";
+import { useRouter } from "next/navigation";
 
 interface VideoFormData {
   title: string;
@@ -16,6 +17,8 @@ interface VideoFormData {
 const VideoUploadForm = () => {
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -55,6 +58,7 @@ const VideoUploadForm = () => {
       console.log("Error creating videos.", error);
     } finally {
       setLoading(false);
+      router.push("/");
     }
   };
 
