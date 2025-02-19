@@ -19,13 +19,13 @@ export default function FileUpload({
   const [error, setError] = useState<string | null>(null);
 
   const onError = (err: { message: string }) => {
-    console.log("Error", err);
+    console.log("Upload Error: ", err);
     setError(err.message);
     setUpload(false);
   };
 
   const handleSuccess = (res: IKUploadResponse) => {
-    console.log("Success", res);
+    console.log("Upload Successful: ", res);
     setUpload(false);
     setError(null);
     if (onSuccess) {
@@ -48,25 +48,27 @@ export default function FileUpload({
   const validateFile = (file: File) => {
     if (fileType === "video") {
       if (!file.type.startsWith("video/")) {
-        setError("Please upload video file! ");
+        setError("Please upload a valid video file!");
         return false;
       }
       if (file.size > 100 * 1024 * 1024) {
-        setError("File Size must be less than 100MB ");
+        setError("File size must be less than 100MB.");
+        return false;
       }
     } else {
-      const validFormat = ["image/jpeg", "image/png", "image/webp"];
-      if (!validFormat.includes(file.type)) {
-        setError("Image format should be PNG, JPEG or WebP");
+      const validFormats = ["image/jpeg", "image/png", "image/webp"];
+      if (!validFormats.includes(file.type)) {
+        setError("Image format should be PNG, JPEG, or WebP.");
         return false;
       }
       if (file.size > 5 * 1024 * 1024) {
-        setError("Image must be less than 5mb ");
+        setError("Image size must be less than 5MB.");
         return false;
       }
     }
-    return false;
+    return true;
   };
+
   return (
     <div className="space-y-2">
       <IKUpload
@@ -76,7 +78,7 @@ export default function FileUpload({
         accept={fileType === "video" ? "video/*" : "image/*"}
         className="file-input file-input-bordered w-full"
         onError={onError}
-        onSuccess={onSuccess}
+        onSuccess={handleSuccess}
         onUploadProgress={handleUploadProgress}
         onUploadStart={handleUploadStart}
         folder={fileType === "video" ? "/videos" : "/images"}
@@ -87,11 +89,7 @@ export default function FileUpload({
           <span>Uploading...</span>
         </div>
       )}
-      {
-        error && (
-            <div className="text-red-600">{error}</div>
-        )
-      }
+      {error && <div className="text-red-600">{error}</div>}
     </div>
   );
 }

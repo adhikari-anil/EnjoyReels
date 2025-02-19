@@ -15,10 +15,8 @@ export interface IVideo {
     transformation?: {
         height: number;
         width: number;
-        quality: number;
+        quality?: number;
     };
-    createdAt: Date;
-    updatedAt: Date; 
 }
 
 const videoSchema = new Schema<IVideo>(
