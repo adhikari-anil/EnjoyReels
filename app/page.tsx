@@ -19,18 +19,28 @@ export default function Page() {
     if (session) {
       const fetchVideos = async () => {
         try {
-          if(video || !video){
-            const data = (await apiClient.getVideos()) as IVideo[];
-            setVideos(data);
-          }else if(image){
-            const data = (await apiClient.getImages()) as IImage[];
-            setImages(data);
-          }
+          const videodata = (await apiClient.getVideos()) as IVideo[];
+          setVideos(videodata);
         } catch (error) {
           console.log("Issue in getting videos", error);
         }
       };
       fetchVideos();
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (session) {
+      const fetchImages = async () => {
+        try {
+          const imagedata = (await apiClient.getImages()) as IImage[];
+          console.log(imagedata);
+          setImages(imagedata);
+        } catch (error) {
+          console.log("Issue in getting videos", error);
+        }
+      };
+      fetchImages();
     }
   }, [session]);
 

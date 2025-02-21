@@ -10,7 +10,7 @@ interface IImageProps {
 const ImageFeed = ({ image }: IImageProps) => {
   return (
     <div className="w-full h-full flex flex-col gap-2">
-      <h1 className="text-xl font-lobster">Your Videos</h1>
+      <h1 className="text-xl font-lobster">Your Images</h1>
       <div className="grid grid-cols-4 gap-4">
         {image.map((image) => (
           <ImageComponent key={image._id?.toString()} image={image} />

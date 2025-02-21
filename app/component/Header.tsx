@@ -1,10 +1,9 @@
 "use client";
 
-import { PlusCircleIcon } from "lucide-react";
+import { ImagePlus, SquarePlay } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Lobster_Two } from "next/font/google";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { Tooltip } from "react-tooltip";
 
 const lobsterTwo = Lobster_Two({
@@ -15,17 +14,14 @@ const lobsterTwo = Lobster_Two({
 
 function Header() {
   const { data: session } = useSession();
-  const [clicked, setClicked] = useState(false);
   const router = useRouter();
 
   const handleUploadClick = () => {
-    setClicked((prev) => !prev);
+    router.push("/uploadimage");
   };
 
-  const handleUploadChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-    setClicked(false);
-    router.push(`/upload?type=${selectedValue}`); // Pass type as query param
+  const handleVideoUploadClick = () => {
+    router.push("/uploadvideos");
   };
 
   return (
@@ -42,26 +38,21 @@ function Header() {
               className="p-2 hover:cursor-pointer"
               onClick={handleUploadClick}
             >
-              <PlusCircleIcon size={28} />
+              <ImagePlus size={28} />
             </button>
             <Tooltip id="upload-tooltip" place="top">
-              Upload
+              Upload image
             </Tooltip>
-
-            {/* Upload Options */}
-            {clicked && (
-              <select
-                className="absolute left-0 top-10 bg-white border rounded-lg shadow-md p-2"
-                onChange={handleUploadChange}
-                defaultValue=""
-              >
-                <option value="" disabled>
-                  Select an option
-                </option>
-                <option value="image">Upload Image</option>
-                <option value="video">Upload Video</option>
-              </select>
-            )}
+            <button
+              data-tooltip-id="upload-tooltip"
+              className="p-2 hover:cursor-pointer"
+              onClick={handleVideoUploadClick}
+            >
+              <SquarePlay size={28} />
+            </button>
+            <Tooltip id="upload-tooltip" place="top">
+              Upload video
+            </Tooltip>
           </div>
 
           {/* User Info */}
