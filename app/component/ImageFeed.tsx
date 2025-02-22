@@ -1,4 +1,3 @@
-import { IVideo } from "@/models/Video";
 import React from "react";
 import ImageComponent from "./ImageComponent";
 import { IImage } from "@/models/Image";

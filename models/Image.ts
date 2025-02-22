@@ -1,8 +1,8 @@
 import mongoose, { model, models, Schema } from "mongoose";
 
 export const IMAGE_DIMENSION = {
-  height: 1920,
-  width: 1080,
+  height: 1080,
+  width: 1920,
 } as const;
 
 export interface IImage {
@@ -31,6 +31,6 @@ const imageSchema = new Schema<IImage>(
   { timestamps: true }
 );
 
-const Image = models?.Video || model<IImage>("Image", imageSchema);
+const Image = models?.Image || model<IImage>("Image", imageSchema);
 
 export default Image;

@@ -13,7 +13,7 @@ interface FileUploadProps {
 export default function FileUpload({
   onSuccess,
   onProgress,
-  fileType = "image",
+  fileType,
 }: FileUploadProps) {
   const [upload, setUpload] = useState(false);
   const [error, setError] = useState<string | null>(null);

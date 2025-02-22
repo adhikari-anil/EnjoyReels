@@ -57,7 +57,7 @@ class ApiClient {
   }
 
   async createImage(imageData: ImageFormData) {
-    return this.fetch("/video", {
+    return this.fetch("/image", {
       method: "POST",
       body: imageData,
     });

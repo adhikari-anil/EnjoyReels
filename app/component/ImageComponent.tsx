@@ -15,8 +15,8 @@ const ImageComponent = ({ image }: { image: IImage }) => {
               path={image.imgurl}
               transformation={[
                 {
-                  height: "1920",
-                  width: "1080",
+                  height: "1080",
+                  width: "1920",
                 },
               ]}
               className="w-full h-full object-cover"
