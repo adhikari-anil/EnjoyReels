@@ -34,7 +34,6 @@ export default function Page() {
       const fetchImages = async () => {
         try {
           const imagedata = (await apiClient.getImages()) as IImage[];
-          console.log(imagedata);
           setImages(imagedata);
         } catch (error) {
           console.log("Issue in getting videos", error);
