@@ -8,6 +8,7 @@ import VideoFeed from "./component/VideoFeed";
 import { useSession } from "next-auth/react";
 import { IImage } from "@/models/Image";
 import ImageFeed from "./component/ImageFeed";
+import Loading from "./component/Loading";
 
 export default function Page() {
   const [video, setVideos] = useState<IVideo[]>([]);

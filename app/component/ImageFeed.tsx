@@ -1,6 +1,7 @@
 import React from "react";
 import ImageComponent from "./ImageComponent";
 import { IImage } from "@/models/Image";
+import Loading from "./Loading";
 
 interface IImageProps {
   image: IImage[];
@@ -14,7 +15,11 @@ const ImageFeed = ({ image }: IImageProps) => {
         {image.map((image) => (
           <ImageComponent key={image._id?.toString()} image={image} />
         ))}
-        {image.length === 0 && <div>No Image Found</div>}
+        {image.length === 0 && (
+          <div>
+            <Loading />
+          </div>
+        )}
       </div>
     </div>
   );

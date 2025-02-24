@@ -1,6 +1,7 @@
 import { IVideo } from "@/models/Video";
 import React from "react";
 import VideoComponent from "./VideoComponent";
+import Loading from "./Loading";
 
 interface IVideoProps {
   videos: IVideo[];
@@ -14,7 +15,11 @@ const VideoFeed = ({ videos }: IVideoProps) => {
         {videos.map((video) => (
           <VideoComponent key={video._id?.toString()} video={video} />
         ))}
-        {videos.length === 0 && <div>No Videos Found</div>}
+        {videos.length === 0 && (
+          <div>
+            <Loading />
+          </div>
+        )}
       </div>
     </div>
   );
