@@ -1,3 +1,4 @@
+"use client"
 import { LoaderPinwheel } from 'lucide-react'
 import React from 'react'
 

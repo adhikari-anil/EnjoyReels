@@ -1,3 +1,4 @@
+"use client"
 import { IImage } from "@/models/Image";
 import Link from "next/link";
 import { IKImage } from "imagekitio-next";

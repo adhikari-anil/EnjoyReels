@@ -34,23 +34,23 @@ function Header() {
           {/* Upload Button with Tooltip */}
           <div className="relative">
             <button
-              data-tooltip-id="upload-tooltip"
+              data-tooltip-id="upload-imagetip"
               className="p-2 hover:cursor-pointer"
               onClick={handleUploadClick}
             >
               <ImagePlus size={28} />
             </button>
-            <Tooltip id="upload-tooltip" place="top">
+            <Tooltip id="upload-imagetip" place="top">
               Upload image
             </Tooltip>
             <button
-              data-tooltip-id="upload-tooltip"
+              data-tooltip-id="upload-videotip"
               className="p-2 hover:cursor-pointer"
               onClick={handleVideoUploadClick}
             >
               <SquarePlay size={28} />
             </button>
-            <Tooltip id="upload-tooltip" place="top">
+            <Tooltip id="upload-videotip" place="top">
               Upload video
             </Tooltip>
           </div>

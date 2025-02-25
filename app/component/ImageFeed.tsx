@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import ImageComponent from "./ImageComponent";
 import { IImage } from "@/models/Image";
