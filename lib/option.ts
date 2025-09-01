@@ -10,14 +10,14 @@ export const authOptions: NextAuthOptions = {
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_CLIENTID!,
-      clientSecret: process.env.GITHUB_CLIENTSECRET!
+      clientSecret: process.env.GITHUB_CLIENTSECRET!,
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENTID!,
-      clientSecret: process.env.GOOGLE_CLIENTSECRET!
+      clientSecret: process.env.GOOGLE_CLIENTSECRET!,
     }),
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
@@ -51,26 +51,46 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({token, user}){
-        if(user){
-            token.id = user.id;
-        }
-        return token
+    async signIn({ user, account }) {
+      if (account?.provider === "credentials") {
+        // User already exist..
+        return true;
+      }
+
+      await connectToDataBase();
+      // For OAuth...
+      let dbUser = await User.findOne({ email: user.email });
+      if (!dbUser) {
+        dbUser = await User.create({
+          email: user.email,
+          avatar_url: user?.image,
+          provider: account?.provider,
+          provider_id: account?.providerAccountId,
+        });
+      }
+      user.id = dbUser._id.toString();
+      return true;
     },
-    async session({session, token}){
-        if(session.user){
-            session.user.id = token.id as string
-        }
-        return session
-    }
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
   },
   session: {
     strategy: "jwt",
-    maxAge: 30*24*60*60
+    maxAge: 30 * 24 * 60 * 60,
   },
   pages: {
     signIn: "/login",
-    error: "/login"
+    error: "/login",
   },
-  secret: process.env.NEXTAUTH_SECRET
+  secret: process.env.NEXTAUTH_SECRET,
 };

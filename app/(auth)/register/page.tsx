@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const signUp = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [conformpassword, setConformPassword] = useState("");
@@ -23,6 +23,7 @@ const signUp = () => {
         body: JSON.stringify({ email, password }),
       });
       const data = result.json();
+      console.log("Registration Data: ", data);
       if (!result.ok) {
         setError("Registration Failed! ");
       }
@@ -50,6 +51,7 @@ const signUp = () => {
               placeholder="Enter Your Email..."
               onChange={(e)=>setEmail(e.target.value)}
             />
+            <p className="text-red-500">{error}</p>
           </div>
           <div className="mt-4 p-2 flex flex-col gap-4">
             <label htmlFor="password">Password</label>
@@ -61,6 +63,7 @@ const signUp = () => {
               placeholder="Enter Your Password..."
               onChange={(e)=>setPassword(e.target.value)}
             />
+            <p className="text-red-500">{error}</p>
           </div>
           <div className="mt-4 p-2 flex flex-col gap-4">
             <label htmlFor="password">Conform Password</label>
@@ -72,6 +75,7 @@ const signUp = () => {
               placeholder="Enter Your Password Again..."
               onChange={(e)=>setConformPassword(e.target.value)}
             />
+            <p className="text-red-500">{error}</p>
           </div>
           <div className="mt-4 p-2 border-2 border-solid border-[#000] rounded-lg">
             <button className="w-full" type="submit">Submit</button>
@@ -88,4 +92,4 @@ const signUp = () => {
   );
 };
 
-export default signUp;
+export default SignUp;

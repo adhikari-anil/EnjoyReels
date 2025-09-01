@@ -20,6 +20,7 @@ export default function Page() {
       const fetchVideos = async () => {
         try {
           const videodata = (await apiClient.getVideos()) as IVideo[];
+          console.log(videodata);
           setVideos(videodata);
         } catch (error) {
           console.log("Issue in getting videos", error);
@@ -34,6 +35,7 @@ export default function Page() {
       const fetchImages = async () => {
         try {
           const imagedata = (await apiClient.getImages()) as IImage[];
+          console.log(imagedata);
           setImages(imagedata);
         } catch (error) {
           console.log("Issue in getting videos", error);
@@ -47,7 +49,7 @@ export default function Page() {
     <div className="h-full w-full flex flex-col gap-2 p-5">
       <Header />
       {session && <VideoFeed videos={video} />}
-      {/* {session && <ImageFeed image={image} />} */}
+      {session && <ImageFeed image={image} />}
       {!session && <h1>Please LogIn!</h1>}
     </div>
   );

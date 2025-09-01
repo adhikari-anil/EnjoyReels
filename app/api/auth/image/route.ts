@@ -1,4 +1,5 @@
 import { connectToDataBase } from "@/lib/db";
+import { authOptions } from "@/lib/option";
 import Image from "@/models/Image";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -13,9 +14,19 @@ export async function GET() {
   //7. catching errors.
   try {
     await connectToDataBase();
-    const images = await Image.find({}).sort({ createdAt: -1 }).lean();
+    const session = await getServerSession(authOptions);
+    console.log("Login Information: ", session);
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: "Unauthorized User!" },
+        { status: 401 }
+      );
+    }
+    const images = await Image.find({ userId: session.user.id })
+      .sort({ createdAt: -1 })
+      .lean();
     if (!images || images.length === 0) {
-      return NextResponse.json([], { status: 500 });
+      return NextResponse.json([{ message: 0 }], { status: 500 });
     }
 
     return NextResponse.json(images);
@@ -39,7 +50,8 @@ export async function POST(request: NextRequest) {
   //8. retrun response of data created.
   //9. handle errors.
   try {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
+    console.log("Session creating image: ", session);
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized User!" },
@@ -48,12 +60,9 @@ export async function POST(request: NextRequest) {
     }
     await connectToDataBase();
     const body = await request.json();
+    console.log("Data from frontend: ", body);
 
-    if (
-      !body.title ||
-      !body.description ||
-      !body.imgurl
-    ) {
+    if (!body.title || !body.description || !body.imgurl) {
       return NextResponse.json(
         { error: "Required fields are missing." },
         { status: 201 }
@@ -67,14 +76,17 @@ export async function POST(request: NextRequest) {
         width: 1080,
         quality: body.transformation?.quality ?? 100,
       },
+      userId: session.user.id,
     };
 
     const newImage = await Image.create(imageData);
 
-    return NextResponse.json(
-      { message: "Image uploaded successfully." },
-      { status: 200 }
-    );
+    if (newImage) {
+      return NextResponse.json(
+        { message: "Image uploaded successfully." },
+        { status: 200 }
+      );
+    }
   } catch (error) {
     console.log("Failed to store Images", error);
     return NextResponse.json(

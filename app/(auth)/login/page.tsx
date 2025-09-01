@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
-import { useSession, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 interface propsForSignIn {
   provider: "github" | "google" | "credentials";
@@ -16,8 +16,6 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const router = useRouter();
-
   const handleSignIn = async (data: propsForSignIn) => {
     if(data.provider==="credentials" && (!data.email || !data.password)){
       setError("Please insert your Email and Password!");
@@ -28,7 +26,6 @@ function Login() {
       ...(data.password && { password: data.password }),
       callbackUrl: "http://localhost:3000",
     });
-    router.push("/");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,7 +37,7 @@ function Login() {
         password: password,
       });
     } catch (error) {
-      console.log("Error in LogIn!..");
+      console.log("Error in LogIn!..",error);
     }
   };
 
@@ -63,6 +60,7 @@ function Login() {
               placeholder="Enter Your Email..."
               onChange={(e) => setEmail(e.target.value)}
             />
+            <p className="text-red-500">{error}</p>
           </div>
           <div className="mt-4 p-2 flex flex-col gap-4">
             <label htmlFor="password">Password</label>
@@ -74,6 +72,7 @@ function Login() {
               placeholder="Enter Your Password..."
               onChange={(e) => setPassword(e.target.value)}
             />
+            <p className="text-red-500">{error}</p>
           </div>
           <div className="mt-4 text-center font-bold">
             <Link href={"forget-password"}>Forget Password ?</Link>
@@ -82,22 +81,26 @@ function Login() {
             <button className="w-full">Submit</button>
           </div>
           <div className="flex justify-center mt-5 gap-2 cursor-pointer">
-            <img
+            <Image
               src="https://avatars.slack-edge.com/2020-11-25/1527503386626_319578f21381f9641cd8_512.png"
               alt=""
+              width={20}
+              height={20}
               className="rounded-full w-10 h-10"
               onClick={() => handleSignIn({ provider: "github" })}
             />
-            <img
+            <Image
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/800px-Google_%22G%22_logo.svg.png"
               alt=""
+              width={20}
+              height={20}
               className="rounded-full w-10 h-10"
               onClick={() => handleSignIn({ provider: "google" })}
             />
           </div>
         </form>
         <p className="text-center mt-2">
-          Don't have any account ?{" "}
+          Donot have any account ?{" "}
           <strong>
             <Link href={"/register"}>Register</Link>
           </strong>

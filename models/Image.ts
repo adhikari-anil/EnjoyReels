@@ -10,6 +10,7 @@ export interface IImage {
   title: string;
   description: string;
   imgurl: string;
+  userId?: mongoose.Types.ObjectId;
   transformation?: {
     height: number;
     width: number;
@@ -22,6 +23,7 @@ const imageSchema = new Schema<IImage>(
     title: { type: String, required: true },
     description: { type: String, required: true },
     imgurl: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     transformation: {
       height: { type: Number, default: IMAGE_DIMENSION.height },
       width: { type: Number, default: IMAGE_DIMENSION.width },

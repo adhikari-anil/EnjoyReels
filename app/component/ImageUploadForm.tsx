@@ -32,6 +32,7 @@ const ImageUploadForm = () => {
   });
 
   const handleUploadSuccess = (response: IKUploadResponse) => {
+    console.log("Cloudinary response: ",response);
     setValue("imgurl", response.filePath);
   };
 
@@ -40,6 +41,7 @@ const ImageUploadForm = () => {
   };
 
   const onSubmit = async (data: ImageFormData) => {
+    console.log("Uploaded Data: ", data);
     if (!data.imgurl) {
       console.log("Please provide image first.");
       return;
@@ -51,7 +53,7 @@ const ImageUploadForm = () => {
       setValue("description", "");
       setValue("imgurl", "");
     } catch (error) {
-      console.log("Error creating videos.", error);
+      console.log("Error creating Images.", error);
     } finally {
       setLoading(false);
       router.push("/");

@@ -1,7 +1,7 @@
 "use client";
 
 import { ImagePlus, SquarePlay } from "lucide-react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Lobster_Two } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { Tooltip } from "react-tooltip";
@@ -69,7 +69,10 @@ function Header() {
           </button>
         </div>
       ) : (
-        <button className="p-2 border-2 rounded-lg" onClick={() => signIn()}>
+        <button
+          className="p-2 border-2 rounded-lg"
+          onClick={() => router.push("login")}
+        >
           Sign in
         </button>
       )}

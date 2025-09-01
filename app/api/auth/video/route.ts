@@ -1,4 +1,5 @@
 import { connectToDataBase } from "@/lib/db";
+import { authOptions } from "@/lib/option";
 import Video from "@/models/Video";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -13,7 +14,11 @@ export async function GET() {
   //7. catching errors.
   try {
     await connectToDataBase();
-    const videos = await Video.find({}).sort({ createdAt: -1 }).lean();
+    const session = await getServerSession(authOptions);
+    console.log("Login Information: ", session);
+    const videos = await Video.find({ userId: session?.user.id })
+      .sort({ createdAt: -1 })
+      .lean();
     if (!videos || videos.length === 0) {
       return NextResponse.json([], { status: 500 });
     }
@@ -39,7 +44,7 @@ export async function POST(request: NextRequest) {
   //8. retrun response of data created.
   //9. handle errors.
   try {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json(
         { error: "Unauthorized User!" },
@@ -69,9 +74,17 @@ export async function POST(request: NextRequest) {
         width: 1080,
         quality: body.transformation?.quality ?? 100,
       },
+      userId: session.user.id
     };
 
     const newVideo = await Video.create(videoData);
+
+    if (newVideo) {
+      return NextResponse.json(
+        { message: "Video uploaded successfully." },
+        { status: 200 }
+      );
+    }
 
     return NextResponse.json(
       { message: "Video uploaded successfully." },

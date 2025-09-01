@@ -18,7 +18,7 @@ const VideoFeed = ({ videos }: IVideoProps) => {
         ))}
         {videos.length === 0 && (
           <div>
-            <Loading />
+            <h1>No any video found! Please upload your content</h1>
           </div>
         )}
       </div>
